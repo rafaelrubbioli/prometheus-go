@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    links:
+      - myapp
+
+  myapp:
+    build: .
+    container_name: myapp
+    ports:
+      - "1234:1234"
